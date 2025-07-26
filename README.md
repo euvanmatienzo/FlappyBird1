@@ -1,1 +1,1 @@
-# FlappyBird1
+# Simple Flappy Bird game

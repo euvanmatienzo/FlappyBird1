@@ -14,10 +14,14 @@ hover_sound = pygame.mixer.Sound("hover.wav")
 click_sound = pygame.mixer.Sound("click.wav")
 point_sound = pygame.mixer.Sound("point.wav")
 
+# Load UFO image
+ufo_image = pygame.image.load("ufo.png")
+ufo_image = pygame.transform.scale(ufo_image, (40, 40))  # Adjust size if needed
+
 # Screen
 WIDTH, HEIGHT = 400, 600
 win = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Flappy Bird")
+pygame.display.set_caption("UFO Escape")
 
 # Colors
 WHITE = (255, 255, 255)
@@ -99,14 +103,20 @@ def main_game():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                bird_movement = -8
             if event.type == spawn_pipe:
                 pipes.append(create_pipe())
 
+        # Handle input
+        mouse_pressed = pygame.mouse.get_pressed()[0]
+        keys = pygame.key.get_pressed()
+        if mouse_pressed or keys[pygame.K_SPACE]:
+            bird_movement = -8
+
         bird_movement += gravity
         bird.y += int(bird_movement)
-        pygame.draw.rect(win, BLACK, bird)
+
+        # Draw UFO instead of  rectangle
+        win.blit(ufo_image, bird)
 
         for pipe_data in pipes:
             pipe_data["top"].x -= pipe_velocity
@@ -192,7 +202,7 @@ def menu_screen():
 
     while selected_action[0] is None:
         win.fill(BLUE)
-        draw_text("Flappy Bird", font, WHITE, win, WIDTH // 2, 100)
+        draw_text("UFO Escape", font, WHITE, win, WIDTH // 2, 100)
 
         mouse_pos = pygame.mouse.get_pos()
         for button in buttons:
@@ -214,7 +224,7 @@ def menu_screen():
                     start_game()
 
     return selected_action[0]
-
+#Test
 # Game loop
 high_score = 0
 while True:
